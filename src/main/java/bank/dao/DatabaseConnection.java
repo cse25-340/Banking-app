@@ -1,0 +1,22 @@
+package bank.dao;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DatabaseConnection {
+    private static final String URL = "jdbc:h2:./data/banking_db";
+    private static final String USER = "sa";
+    private static final String PASSWORD = "";
+
+    private static boolean tablesReady = false;
+
+    public static Connection getConnection() throws SQLException {
+        // Make sure the tables exist the first time anything touches the database
+        if (!tablesReady) {
+            tablesReady = true;
+            DatabaseSetup.createTables();
+        }
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+}
